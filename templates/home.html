@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Boston House Price Prediction</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding-top: 10px;
+      box-sizing: border-box;
+      position: relative;
+    }
+
+    .container {
+      background-color: white;
+      padding: 50px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 520px;
+      max-height: 1040px;
+      margin-top: 5px;
+      margin-bottom: 10px;
+      position: relative;
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 0px;
+      margin-bottom: 10px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #0077ff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 15px;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #005cc8;
+    }
+
+    /* Modal (geçici panel) */
+    .modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      border-radius: 10px;
+      padding: 30px 40px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+      z-index: 999;
+      text-align: center;
+      min-width: 300px;
+      font-size: 18px;
+      color: #0077ff;
+      animation: fadeIn 0.4s ease-out forwards;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+      }
+      to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+      }
+    }
+
+    .result-box {
+      margin-top: 20px;
+      font-size: 18px;
+      text-align: center;
+      color: #0077ff;
+      border-top: 1px solid #ccc;
+      padding-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🏡 Boston House Price Prediction</h1>
+    <form action="{{ url_for('predict')}}" method="post">
+      <input type="text" name="CRIM" placeholder="CRIM" required value="{{ request.form.CRIM }}">
+      <input type="text" name="ZN" placeholder="ZN" required value="{{ request.form.ZN }}">
+      <input type="text" name="INDUS" placeholder="INDUS" required value="{{ request.form.INDUS }}">
+      <input type="text" name="CHAS" placeholder="CHAS" required value="{{ request.form.CHAS }}">
+      <input type="text" name="NOX" placeholder="NOX" required value="{{ request.form.NOX }}">
+      <input type="text" name="RM" placeholder="RM" required value="{{ request.form.RM }}">
+      <input type="text" name="Age" placeholder="Age" required value="{{ request.form.Age }}">
+      <input type="text" name="DIS" placeholder="DIS" required value="{{ request.form.DIS }}">
+      <input type="text" name="RAD" placeholder="RAD" required value="{{ request.form.RAD }}">
+      <input type="text" name="TAX" placeholder="TAX" required value="{{ request.form.TAX }}">
+      <input type="text" name="PTRATIO" placeholder="PTRATIO" required value="{{ request.form.PTRATIO }}">
+      <input type="text" name="B" placeholder="B" required value="{{ request.form.B }}">
+      <input type="text" name="LSTAT" placeholder="LSTAT" required value="{{ request.form.LSTAT }}">
+      <button type="submit">📊 Predict</button>
+    </form>
+
+    {% if prediction_text %}
+    <div class="result-box">
+      💰 {{ prediction_text }} $
+    </div>
+    {% endif %}
+  </div>
+
+  {% if prediction_text %}
+  <div id="modal" class="modal">
+    💰   {{ prediction_text }} $
+  </div>
+  <script>
+    // Modal'ı 3 saniye sonra otomatik kapat
+    setTimeout(() => {
+      const modal = document.getElementById('modal');
+      if (modal) {
+        modal.style.display = 'none';
+      }
+    }, 3000);
+  </script>
+  {% endif %}
+</body>
+</html>
